@@ -1,7 +1,0 @@
-.main_float_button {
-  position: fixed;
-  left: 50%;
-  bottom: 30px;
-  transform: translateX(-50%);
-  z-index: 10;
-}

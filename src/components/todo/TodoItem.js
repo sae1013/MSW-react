@@ -2,20 +2,42 @@ import React from 'react';
 import classes from './TodoItem.module.css';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
 
 function TodoItem(props) {
-  const { text, date } = props;
+  const { id, text, done, onToggle, onDelete, onSetEditMode } = props;
+
+  const toggleTodoHandler = () => {
+    onToggle(id);
+  };
+
+  const deleteTodoHandler = () => {
+    onDelete(id);
+  };
+
+  const editTodoHandler = () => {
+    onSetEditMode({ id, text, done });
+  };
 
   return (
     <React.Fragment>
-      <li>
+      <li className={done ? `${classes.transparent}` : null}>
         <div className={classes.text}>{text}</div>
         <div className={classes.action}>
-          <button className={`${classes.button} ${classes.done}`}>
-            <CheckCircleOutlineIcon />
+          <button
+            className={
+              done
+                ? `${classes.button} ${classes.doneToggle} ${classes.done}`
+                : `${classes.button} ${classes.doneToggle}`
+            }
+          >
+            <CheckCircleOutlineIcon onClick={toggleTodoHandler} />
           </button>
           <button className={`${classes.button} ${classes.delete}`}>
-            <DeleteForeverIcon />
+            <DeleteForeverIcon onClick={deleteTodoHandler} />
+          </button>
+          <button className={`${classes.button} ${classes.edit}`}>
+            <EditIcon onClick={editTodoHandler} />
           </button>
         </div>
       </li>
