@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
+
 import TodoList from './components/todo/TodoList';
 import classes from './App.module.css';
 import ProgressBar from './components/ui/ProgressBar';
@@ -9,7 +10,7 @@ function App() {
   const [editMode, setEditMode] = useState(null);
 
   useEffect(() => {
-    // 로컬스토리지 첫 렌더링시 데이터 받아오기. 데이터가없으면 빈 배열로둠
+    //  첫 렌더링시 로컬스토리지의 데이터 받아오기.
     if (localStorage.getItem('todos') == null) {
       return;
     }
@@ -46,7 +47,6 @@ function App() {
   };
 
   const deleteTodo = (id) => {
-    console.log(id);
     const newTodos = todoList.filter((todo) => todo.id !== id);
     localStorage.setItem('todos', JSON.stringify(newTodos));
     setTodoList(newTodos);

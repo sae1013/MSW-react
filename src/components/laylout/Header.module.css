@@ -1,0 +1,9 @@
+.container {
+  padding-top: 10px;
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+.clock {
+  font-size: 30px;
+}
