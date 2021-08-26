@@ -18,7 +18,9 @@ function TodoItem(props) {
   const editTodoHandler = () => {
     onSetEditMode({ id, text, done });
   };
-
+  useEffect(()=>{
+    console.log('아이템 렌더링')
+  })
   return (
     <React.Fragment>
       <li className={done ? `${classes.transparent}` : null}>
@@ -46,4 +48,4 @@ function TodoItem(props) {
   );
 }
 
-export default TodoItem;
+export default React.memo(TodoItem);

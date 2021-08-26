@@ -38,19 +38,24 @@ function App() {
     setTodoList(newTodos);
   };
 
-  const toggleTodo = (id) => {
-    let targetIdx = todoList.findIndex((todo) => todo.id === id);
-    const newTodos = [...todoList];
-    newTodos[targetIdx].done = !newTodos[targetIdx].done;
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-    setTodoList(newTodos);
-  };
+  const toggleTodo = useCallback((id) => {
+    setTodoList((todoList) => {
+      let targetIdx = todoList.findIndex((todo) => todo.id === id);
+      const newTodos = [...todoList];
+      newTodos[targetIdx].done = !newTodos[targetIdx].done;
+      localStorage.setItem('todos', JSON.stringify(newTodos));
+      return newTodos;
+    });
+  },[]);
 
-  const deleteTodo = (id) => {
-    const newTodos = todoList.filter((todo) => todo.id !== id);
-    localStorage.setItem('todos', JSON.stringify(newTodos));
-    setTodoList(newTodos);
-  };
+  const deleteTodo = useCallback((id) => {
+    setTodoList(()=>{
+      const newTodos = todoList.filter((todo) => todo.id !== id);
+      localStorage.setItem('todos', JSON.stringify(newTodos));
+      return newTodos;
+    })
+    
+  },[]);
 
   const editTodo = (editedTodo) => {
     const newTodos = todoList.map((todo) => {
