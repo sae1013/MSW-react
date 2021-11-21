@@ -41,9 +41,9 @@ function App() {
       return newTodos;
     });
   },[]);
-
-  const deleteTodo = useCallback((id) => {
-    setTodoList(()=>{
+  
+  const deleteTodo = useCallback((id) => {  
+    setTodoList((todoList)=>{
       const newTodos = todoList.filter((todo) => todo.id !== id);
       localStorage.setItem('todos', JSON.stringify(newTodos));
       return newTodos;

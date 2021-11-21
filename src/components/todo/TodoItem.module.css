@@ -8,6 +8,9 @@ li {
   align-items: center;
   width: 90%;
   margin: 10px auto;
+  padding:10px;
+  transition: all 0.3s;
+  animation: slidein 1s ;
 }
 .action {
   margin-left: auto;
@@ -38,8 +41,19 @@ li {
 
 .transparent {
   text-decoration-line: line-through;
+  width:100%;
+  text-decoration-color: red;
 }
 
 hr {
   border: 1px solid rgb(194, 191, 191, 0.4);
+}
+
+@keyframes slidein {
+  from{
+    opacity: 0;
+  }
+  to {
+    opacity: 100;
+  }
 }

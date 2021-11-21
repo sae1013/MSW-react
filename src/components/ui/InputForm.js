@@ -74,9 +74,11 @@ const Form = styled.div`
     padding: 10px;
     outline: none;
     transition: all 0.3s;
+    
     &:focus {
       transition: all 0.3s;
-      background-color: rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      width:85%;
     }
   }
 
@@ -84,11 +86,13 @@ const Form = styled.div`
     padding: 5px;
     margin-left: 5px;
     font-size: 15px;
+    font-weight: 600;
     border: none;
     background: none;
+    transition: color .1s;
+    
     &:hover {
-      background-color: black;
-      color: white;
+      color: red;
     }
   }
 `;
