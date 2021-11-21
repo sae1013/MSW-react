@@ -18,16 +18,10 @@ function App() {
   }, []);
 
   const calculateProgressValue = () => {
-    if (todoList.length === 0) {
-      return 0;
-    }
-    let cnt = 0;
-    todoList.forEach((todo) => {
-      if (todo.done) {
-        cnt += 1;
-      }
-    });
-    return parseInt((cnt / todoList.length) * 100);
+    const progress = todoList.reduce((acc,todo)=>{
+      return todo.done ? acc+1 : acc
+    },0);
+    return parseInt((progress / todoList.length) * 100);
   };
 
   const progressValue = useMemo(calculateProgressValue, [todoList]);
