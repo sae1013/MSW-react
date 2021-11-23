@@ -5,62 +5,72 @@ import classes from './App.module.css';
 import ProgressBar from './components/ui/ProgressBar';
 import InputForm from './components/ui/InputForm';
 
-function App() {
-  const [todoList, setTodoList] = useState([]);
-  const [editMode, setEditMode] = useState(null);
+type Todo = {
+  id: string
+  text:string
+  done:boolean
+} 
+
+function App():JSX.Element {
+  const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editTarget,setEditTarget] = useState<Todo|null>(); 
 
   useEffect(() => {
     //  첫 렌더링시 로컬스토리지의 데이터 받아오기.
     if (localStorage.getItem('todos') == null) {
       return;
-    }
-    setTodoList(JSON.parse(localStorage.getItem('todos')));
+    }else
+    setTodoList(JSON.parse(localStorage.getItem('todos') || '[]'));
   }, []);
 
-  const calculateProgressValue = () => {
-    const progress = todoList.reduce((acc,todo)=>{
+  const calculateProgressValue = ():number => {
+    const progress:number = todoList.reduce((acc,todo)=>{
       return todo.done ? acc+1 : acc
     },0);
-    return parseInt((progress / todoList.length) * 100);
+    return (progress / todoList.length) * 100;
   };
 
-  const progressValue = useMemo(calculateProgressValue, [todoList]);
+  const progressValue:number = useMemo(calculateProgressValue, [todoList]);
 
-  const addTodo = (todo) => {
+  const addTodo = (todo:Todo):void => {
     let newTodos = [...todoList, todo];
     localStorage.setItem('todos', JSON.stringify(newTodos));
     setTodoList(newTodos);
   };
 
-  const toggleTodo = useCallback((id) => {
-    setTodoList((todoList) => {
-      let targetIdx = todoList.findIndex((todo) => todo.id === id);
-      const newTodos = [...todoList];
+  const toggleTodo = useCallback((id:string):void => {
+    setTodoList((todoList:Todo[]) => {
+      let targetIdx:number = todoList.findIndex((todo:Todo) => todo.id === id);
+      const newTodos:Todo[] = [...todoList];
       newTodos[targetIdx].done = !newTodos[targetIdx].done;
       localStorage.setItem('todos', JSON.stringify(newTodos));
       return newTodos;
     });
   },[]);
   
-  const deleteTodo = useCallback((id) => {  
-    setTodoList((todoList)=>{
+  const deleteTodo = useCallback((id:string) => {  
+    setTodoList((todoList:Todo[])=>{
       const newTodos = todoList.filter((todo) => todo.id !== id);
       localStorage.setItem('todos', JSON.stringify(newTodos));
       return newTodos;
     })
     
   },[]);
-
-  const editTodo = (editedTodo) => {
-    const newTodos = todoList.map((todo) => {
-      if (todo.id === editedTodo.id) {
-        return editedTodo;
+  
+  const editTodo = (newEditTodo:Todo) => {  
+    const newTodos:Todo[] = todoList.map((todo:Todo) => {
+      if (todo.id === newEditTodo.id) {
+        return newEditTodo;
       }
       return todo;
     });
     setTodoList(newTodos);
+    setEditMode(false);
+    setEditTarget(null);
     localStorage.setItem('todos', JSON.stringify(newTodos));
-    setEditMode(null);
+    
+    
   };
 
   return (
@@ -74,12 +84,14 @@ function App() {
           onToggle={toggleTodo}
           onDelete={deleteTodo}
           onSetEditMode={setEditMode}
+          onSetEditTarget = {setEditTarget}
         />
         <InputForm
           onAddTodo={addTodo}
           editMode={editMode}
           onSetEditMode={setEditMode}
           onEditSubmit={editTodo}
+          editTarget = {editTarget as Todo}
         ></InputForm>
       </div>
     </div>

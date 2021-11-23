@@ -2,7 +2,11 @@ import React from 'react';
 import Header from './Header';
 import classes from './Layout.module.css';
 
-function Layout(props) {
+interface LayoutProps {
+  children:JSX.Element
+}
+
+function Layout(props:LayoutProps) {
   return (
     <div className={classes.outer}>
       <Header></Header>
@@ -12,3 +16,4 @@ function Layout(props) {
 }
 
 export default Layout;
+

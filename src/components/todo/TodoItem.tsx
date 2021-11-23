@@ -4,9 +4,23 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
-function TodoItem(props) {
-  const { id, text, done, onToggle, onDelete, onSetEditMode } = props;
+type Todo ={
+  id:string,
+  text:string,
+  done:boolean,
+}
 
+interface TodoItemProps {
+  id:string
+  text:string,
+  done:boolean,
+  onToggle:(id:string)=> void,
+  onDelete: (id:string)=> void,
+  onSetEditMode: (editMode:boolean) => void,
+  onSetEditTarget: (todo:Todo)=>void
+}
+function TodoItem({id, text, done, onToggle, onDelete, onSetEditMode,onSetEditTarget}:TodoItemProps) {
+  
   const toggleTodoHandler = () => {
     onToggle(id);
   };
@@ -15,15 +29,14 @@ function TodoItem(props) {
     onDelete(id);
   };
 
-  const editTodoHandler = () => {
-    onSetEditMode({ id, text, done });
+  const editTodoHandler = () => { 
+    onSetEditTarget({id,text,done});
+    onSetEditMode(true);
   };
-  useEffect(()=>{
-    console.log('아이템 렌더링')
-  })
+  
   return (
     <React.Fragment>
-      <li className={done ? `${classes.transparent}` : null}>
+      <li className={done ? `${classes.transparent}` : ''}>
         <div className={classes.text}>{text}</div>
         <div className={classes.action}>
           <button

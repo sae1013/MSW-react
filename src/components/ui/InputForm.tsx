@@ -3,43 +3,58 @@ import classes from './InputForm.module.css';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 
-function InputForm(props) {
-  const { onAddTodo, editMode = false, onSetEditMode, onEditSubmit } = props;
-  const [inputText, setInputText] = useState('');
+type Todo = {
+  id:string, 
+  text: string, 
+  done: boolean 
+}
 
+interface InputFormProps {
+  onAddTodo:(todo:Todo)=> void,
+  editMode: boolean,
+  onSetEditMode: (editMode:boolean) => void,
+  onEditSubmit:(todo:Todo)=>void,
+  editTarget:Todo
+  
+}
+
+function InputForm(props:InputFormProps) {
+  const { onAddTodo, editMode = false, onSetEditMode, onEditSubmit,editTarget  } = props;
+  const [inputText, setInputText] = useState<string>('');
+  
   useEffect(() => {
     if (editMode) {
-      setInputText(editMode.text);
+      setInputText(editTarget.text);
     } else {
       setInputText('');
     }
   }, [editMode]);
 
-  const inputChangeHandler = (e) => {
-    setInputText(e.target.value);
+  const inputChangeHandler = (event:{target:HTMLInputElement}) => {
+    setInputText(event.target.value );
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (event:React.KeyboardEvent<HTMLInputElement>) => {
     if (!editMode) {
       // 일반모드
-      if (e.key === 'Enter') {
-        const todo = { id: uuid(), text: inputText, done: false };
+      if (event.key === 'Enter') {
+        const todo:Todo = { id: uuid(), text: inputText, done: false };
         setInputText('');
         onAddTodo(todo);
       }
     } else {
       //편집모드
-      if (e.key === 'Enter') {
-        editMode.text = inputText;
-        onEditSubmit(editMode);
+      if (event.key === 'Enter') {
+        const newEditTodo = {...editTarget,text:inputText}
+        onEditSubmit(newEditTodo);
       }
     }
   };
 
   const canselEditHandler = () => {
-    onSetEditMode(null);
+    onSetEditMode(false);
   };
-
+  
   return (
     <Form>
       {editMode ? <p>수정 중...</p> : null}

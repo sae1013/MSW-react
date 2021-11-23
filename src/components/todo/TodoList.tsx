@@ -1,9 +1,22 @@
 import React from 'react';
 import TodoItem from './TodoItem';
-
 import classes from './TodoList.module.css';
 
-function TodoList({ todoList, onToggle, onDelete, onSetEditMode }) {
+type Todo  = {
+  id: string
+  text:string
+  done:boolean
+} 
+
+interface TodoListProps{
+  todoList:Todo[],
+  onToggle:(id:string)=> void,
+  onDelete: (id:string)=> void,
+  onSetEditMode: (editMode:boolean) => void,
+  onSetEditTarget:(todo:Todo) => void
+}
+
+function TodoList({ todoList, onToggle, onDelete, onSetEditMode,onSetEditTarget }:TodoListProps) {
   return (
     <div className={classes.container}>
       {todoList.map((todo) => (
@@ -15,6 +28,7 @@ function TodoList({ todoList, onToggle, onDelete, onSetEditMode }) {
           onToggle={onToggle}
           onDelete={onDelete}
           onSetEditMode={onSetEditMode}
+          onSetEditTarget = {onSetEditTarget}
         />
       ))}
     </div>

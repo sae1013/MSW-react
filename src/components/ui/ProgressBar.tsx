@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ProgressBar(props) {
+function ProgressBar(props:{value:number}) {
   const classes = useStyles();
 
   return (
